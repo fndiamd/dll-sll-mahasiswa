@@ -331,23 +331,53 @@ void MatkulToMahasiswa(int _nrp){
 
             // Sisip awal ke mata kuliah mahasiswa;
             // * MKselect berisi mata kuliah yang diselect ( baru )* //
-            //printf("%d %s\n", MKselect->id, MKselect->namaMatkul);
+            printf("%d %s\n", MKselect->id, MKselect->namaMatkul);
 
                 if(Mselect->nextMK == NULL){
+                    //Jika Mahasiswa masih belum punya matkul, maka sisip awal.
                     newMKhead = Mselect->nextMK;
                     newMKtail = Mselect->nextMK;
                     Mselect->nextMK = MKselect;
-                    printf("NULL");
+                    /*if(Mselect->nextMK != NULL){
+                        printf("Sudah diisi %d %s\n", Mselect->nextMK->id, Mselect->nextMK->namaMatkul);
+                    }else{
+                        printf("Masih NULL\n");
+                    }*/
+
                 }else{
-                    newMKtail = newMKhead;
+                    //Jika mahasiswa sudah punya matkul dan ingin menambahkan ulang maka, sisip akhir.
+                    newMKtail = newMKhead = Mselect->nextMK;
                     while(newMKtail->next != NULL){
                         newMKtail = newMKtail->next;
                     }
+                    MKselect->next = NULL;
                     newMKtail->next = MKselect;
-                    printf("Tidak null");
+                    //printf("Sudah diisi %d %s\n", MKselect->id, MKselect->namaMatkul);
                 }
             }
         }
+    }
+}
+
+void printAllDataMahasiswa(){
+
+    MNode *PM = Mhead;
+    MKNode *cek = PM->nextMK;
+
+    printf("\nNRP\t\tNama\n");
+    while(PM != NULL){
+        printf("%d\t%s\n", PM->nrp, PM->nama);
+        /*Anjayyyy*/
+        while(PM->nextMK != NULL){
+            //loop hasil pilih matkul mahasiswa
+            printf("%d\t%s\n", PM->nextMK->id, PM->nextMK->namaMatkul);
+            PM->nextMK = PM->nextMK->next;
+        }
+        /*Stuck*/
+        if(cek == NULL){
+            printf("Mahasiswa belum memilih matkul\n");
+        }
+        PM = PM->next;
     }
 }
 
@@ -412,7 +442,7 @@ int main(){
                 cleanStdin();
                 break;
             case 4:
-                printf("Tampil sks mahasiswa");
+                printAllDataMahasiswa();
                 break;
             case 5:
                 printf("Masukan NRP Mahasiswa yang dihapus : ");
